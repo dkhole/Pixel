@@ -1,0 +1,76 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://src/Hit and Hurtboxes/Hitbox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/white_square.png" type="Texture" id=2]
+[ext_resource path="res://src/Agents/Pets/Chicken/FlameHitbox.gd" type="Script" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.426357, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.992188, 1, 0, 1, 1, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 0.355682 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+flag_disable_z = true
+spread = 10.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 400.0
+initial_velocity_random = 0.21
+angular_velocity = 200.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale = 0.2
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="CapsuleShape2D" id=7]
+radius = 22.6179
+height = 181.743
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 18.1128
+height = 186.839
+
+[node name="Flamethrower" type="Area2D"]
+scale = Vector2( 0.125, 0.125 )
+z_index = 4
+z_as_relative = false
+collision_layer = 0
+collision_mask = 0
+
+[node name="Particles2D" type="Particles2D" parent="."]
+material = SubResource( 1 )
+amount = 25
+lifetime = 0.5
+process_material = SubResource( 6 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 114.926, 0 )
+rotation = 1.5708
+shape = SubResource( 7 )
+disabled = true
+
+[node name="Hitbox" parent="." instance=ExtResource( 1 )]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2( 111.311, -1.46255 )
+rotation = 1.5708
+shape = SubResource( 8 )
+
+[editable path="Hitbox"]
