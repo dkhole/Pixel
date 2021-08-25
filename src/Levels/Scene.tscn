@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://src/Agents/Enemies/Mushroom/Mushroom.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/Agents/Enemies/Imp/Imp.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/Environment/Tree.tscn" type="PackedScene" id=4]
@@ -130,7 +131,25 @@ scale = Vector2( -1, 1 )
 polygon = PoolVector2Array( 528, 0, 528, 32, 208, 32, 208, 224, 496, 224, 496, 608, 64, 608, 64, 928, 536, 928, 536, 992, 24, 992, 32, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 156.193, 775.678 )
+position = Vector2( 520.31, 341.005 )
 
 [node name="Imp" parent="." instance=ExtResource( 3 )]
-position = Vector2( 692.956, 758.472 )
+position = Vector2( 721.424, 665.577 )
+
+[node name="Mushroom" parent="." instance=ExtResource( 1 )]
+position = Vector2( 415.394, 787.161 )
+
+[node name="Mushroom2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 114.44, 789.069 )
+
+[node name="Mushroom3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 853.294, 784.355 )
+
+[node name="Imp2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 312.321, 855.185 )
+
+[node name="Imp3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 298.345, 726.956 )
+
+[node name="Imp4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 734.162, 843.619 )

@@ -42,9 +42,11 @@ export var isDead: = false
 
 var knockback_vector = Vector2.ZERO
 var state = MOVE
-var curr_pet = pet.EMPTY
-var curr_pets = pets[0]
+var curr_pets = pet.EMPTY
 var swapping_pets = false
+var tele_out = false
+
+signal remove_pet
 
 func _ready():
 	findRad.shape.radius = 100
@@ -62,45 +64,41 @@ func _physics_process(delta):
 
 func _input(event):
 	if event.is_action_pressed("ui_change_pet") && !swapping_pets:
-		#instead should store pets in datastruct
-		match curr_pet:
-			pet.EMPTY:
-				swapping_pets = true
-				add_axyl()
+		swapping_pets = true
+		if curr_pets + 1 > pets.size() - 1:
+			curr_pets = pets[0]
+		else:
+			curr_pets = pets[curr_pets + 1]
+		match curr_pets:
+			#first so we dont have to remove anything
 			pet.AXYL:
-				swapping_pets = true
-				remove_pet(axyl_instance)
+				add_pet(axyl)
+			#for the rest we remove current pet as add pet gets called after teleport animation is complete
 			pet.CHICKEN:
-				swapping_pets = true
-				remove_pet(chicken_instance)
+				remove_pet()
+			pet.EMPTY:
+				remove_pet()
 
 func finished_tele_in():
 	swapping_pets = false
-	print("fyck")
+	
+func finished_tele_out():
+	#add pet
+	match curr_pets:
+		pet.CHICKEN:
+			add_pet(chicken)
+		pet.EMPTY:
+			swapping_pets = false
 
-func remove_pet(remove):
-	#remove
-	remove.get_node("AnimationPlayer").stop(true)  # restart = true is the default, so you can also omit it
-	print(remove.get_node("AnimationPlayer").play("tele_out"))
-	remove.get_node("AnimationPlayer").play("tele_out")
-	print(remove.get_node("AnimationPlayer").current_animation)
-	print(remove)
+func remove_pet():
+	emit_signal("remove_pet")
 
-func add_axyl():
-	axyl_instance = axyl.instance()
-	axyl_instance.position = get_global_position()
-	axyl_instance.connect("tele_in", self, "finished_tele_in")
-	axyl_instance.connect("removed_axyl", self, "add_chicken")
-	get_parent().add_child(axyl_instance)
-	curr_pet = pet.AXYL
-
-func add_chicken():
-	chicken_instance = chicken.instance()
-	chicken_instance.position = get_global_position()
-	chicken_instance.connect("tele_in", self, "finished_tele_in")
-	chicken_instance.connect("removed_chicken", self, "add_axyl")
-	get_parent().add_child(chicken_instance)
-	curr_pet = pet.CHICKEN
+func add_pet(pet):
+	var pet_instance = pet.instance()
+	pet_instance.position = Vector2(get_global_position().x + 15, get_global_position().y)
+	pet_instance.connect("tele_in", self, "finished_tele_in")
+	pet_instance.connect("removed_pet", self, "finished_tele_out")
+	get_parent().add_child(pet_instance)
 
 func get_input_move(delta):
 	var axis = get_input_axis()

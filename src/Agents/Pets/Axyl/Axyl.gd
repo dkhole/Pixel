@@ -4,7 +4,7 @@ var bubbles = preload("./Bubbles.tscn")
 onready var bubbles_start = $BubbleStart
 var bubbles_instance
 var isBubble = false
-signal removed_axyl
+signal removed_pet
 signal tele_in
 
 func _init().():
@@ -53,5 +53,5 @@ func tele_out_start():
 	
 func tele_out_finished():
 	#emit signal to player
-	emit_signal("removed_axyl")
+	emit_signal("removed_pet")
 	queue_free()

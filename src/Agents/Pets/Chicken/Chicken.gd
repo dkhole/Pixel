@@ -4,7 +4,7 @@ var flamethrower = preload("./Flamethrower.tscn")
 onready var fire_start = $FireStart
 var flame_instance
 var flaming = false
-signal removed_chicken
+signal removed_pet
 signal tele_in
 
 func _init().():
@@ -50,8 +50,10 @@ func tele_finished():
 
 func tele_out_start():
 	state = pet_states.TELEPORTING
+	print(anim_player.get_current_animation_position())
 	
 func tele_out_finished():
 	#emit signal to player
-	emit_signal("removed_chicken")
+	print("removing")
+	emit_signal("removed_pet")
 	queue_free()

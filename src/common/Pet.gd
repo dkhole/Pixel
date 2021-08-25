@@ -29,6 +29,9 @@ func _init(_DISTANCE_THRESHOLD = 35.0,  _slow_radius = 100.0, _max_speed = 300.0
 	max_speed = _max_speed
 	attack_range = _attack_range
 	
+func _ready():
+	player.connect("remove_pet", self, "tele_out")
+	
 func _process(_delta):
 	#toggle attacking
 	if(Input.is_action_just_pressed("ui_charge_pet") && state != pet_states.TELEPORTING):
@@ -101,3 +104,8 @@ func move_to_target_global():
 	else:
 		anim_player.play("move_left")
 	_velocity = move_and_slide(_velocity)
+
+func tele_out():
+	state = pet_states.TELEPORTING
+	anim_player.play("tele_out")
+
